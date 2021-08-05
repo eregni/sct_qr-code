@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SCT QR-code generator</string>
+    <string name="btn_generate_qr">Genereer QR-code</string>
+    <string name="label_amount">"Bedrag: "</string>
+    <string name="label_message">"Mededeling: "</string>
+    <string name="btn_settings">Instellingen</string>
+    <string name="title_activity_settings">Instellingen</string>
+    <string name="settings_name">Voor en achternaam</string>
+    <string name="menu_settings">Instellingen</string>
+    <string name="menu_about">Over</string>
+</resources>

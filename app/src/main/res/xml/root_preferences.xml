@@ -1,0 +1,27 @@
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        android:key="settings_name"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/settings_name"
+        app:singleLineTitle="true"
+        app:useSimpleSummaryProvider="true" />
+    <EditTextPreference
+        android:key="settings_iban"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/settings_iban"
+        app:singleLineTitle="true"
+        app:useSimpleSummaryProvider="true" />
+    <EditTextPreference
+        android:key="settings_bic"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/settings_bic"
+        app:singleLineTitle="true"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>

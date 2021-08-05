@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SCT QR-code generator</string>
+
+    <!-- Main Activity-->
+    <string name="label_amount">"Sum: "</string>
+    <string name="label_message">"Message: "</string>
+    <string name="btn_generate_qr">Generate QR-code</string>
+    <string name="btn_settings">Settings</string>
+    <string name="qr_code" translatable="false">qr-code</string>
+
+    <!-- Settings Activity -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="settings_name">First + last name</string>
+    <string name="settings_iban" translatable="false">IBAN</string>
+    <string name="settings_bic" translatable="false">BIC</string>
+
+    <!-- Menu main -->
+    <string name="menu_settings">Settings</string>
+    <string name="menu_about">About</string>
+</resources>
