@@ -11,6 +11,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.preference.PreferenceManager
@@ -23,11 +24,15 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 
 class MainActivity : AppCompatActivity() {
     // todo Enable data binding -> https://developer.android.com/codelabs/kotlin-android-training-data-binding-basics#2
-    // todo go to settings when user name and/or iban is not present
     // todo Readme.md
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this).all
         setContentView(R.layout.activity_main)
+        if ("" in prefs.values) menuOpenSettings()
+        findViewById<TextView>(R.id.label_name_value).text = "${prefs["settings_name"]}"
+        findViewById<TextView>(R.id.label_iban_value).text = "${prefs["settings_iban"]}"
+        findViewById<TextView>(R.id.label_bic_value).text = "${prefs["settings_bic"]}"
         }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -43,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.menu_about -> {
-                menuAbout()
+                dialogMenuAbout()
                 true
             }
             else ->
@@ -51,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun generateQrCode(view: View){
+    fun handlerGenerateQrCode(view: View){
         val inputAmount = findViewById<EditText>(R.id.input_amount).text
         if (inputAmount.isEmpty()) return
         val inputMessage = findViewById<EditText>(R.id.input_message).text
@@ -66,12 +71,12 @@ class MainActivity : AppCompatActivity() {
         val qrView = findViewById<ImageView>(R.id.imageView_qr_code)
         val hints = HashMap<EncodeHintType, ErrorCorrectionLevel>()
         hints[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.M
-        val userSettings = getQrSettings()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this).all
         val qrString =
             "BCD\n002\n1\nSCT\n" +
-            "${userSettings["bic"]}\n" +
-            "${userSettings["name"]}\n" +
-            "${userSettings["iban"]}\n" +
+            "${prefs["bic"]}\n" +
+            "${prefs["name"]}\n" +
+            "${prefs["iban"]}\n" +
             "EUR$amount\n\n\n" +
             message
         val bitMatrix: BitMatrix = QRCodeWriter().encode(qrString, BarcodeFormat.QR_CODE,
@@ -79,15 +84,7 @@ class MainActivity : AppCompatActivity() {
         return BarcodeEncoder().createBitmap(bitMatrix)
     }
 
-    private fun getQrSettings(): Map<String, String>{
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val name = prefs.getString("settings_name", "").toString()
-        val iban = prefs.getString("settings_iban", "").toString()
-        val bic = prefs.getString("settings_bic", "").toString()
-        return mapOf("name" to name, "iban" to iban, "bic" to bic)
-    }
-
-    private fun menuAbout(){
+    private fun dialogMenuAbout(){
         val dialog = AlertDialog.Builder(this)
         // todo: about text...
         dialog.setTitle("Spaceman Spiff!")

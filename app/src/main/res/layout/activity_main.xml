@@ -7,6 +7,60 @@
     tools:layout_editor_absoluteY="81dp">
 
     <TextView
+        android:id="@+id/label_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/label_name"
+        app:layout_constraintEnd_toEndOf="@+id/label_message"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/label_name_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="name_value"
+        app:layout_constraintStart_toEndOf="@+id/label_name"
+        app:layout_constraintTop_toTopOf="@+id/label_name" />
+
+    <TextView
+        android:id="@+id/label_iban"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/label_iban"
+        app:layout_constraintEnd_toEndOf="@+id/label_message"
+        app:layout_constraintTop_toBottomOf="@+id/label_name" />
+
+    <TextView
+        android:id="@+id/label_iban_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="iban_value"
+        app:layout_constraintStart_toEndOf="@+id/label_iban"
+        app:layout_constraintTop_toTopOf="@+id/label_iban" />
+
+    <TextView
+        android:id="@+id/label_bic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/label_bic"
+        app:layout_constraintEnd_toStartOf="@+id/input_message"
+        app:layout_constraintTop_toBottomOf="@+id/label_iban" />
+
+    <TextView
+        android:id="@+id/label_bic_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="bic_value"
+        app:layout_constraintStart_toEndOf="@+id/label_bic"
+        app:layout_constraintTop_toTopOf="@+id/label_bic" />
+
+    <TextView
         android:id="@+id/label_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +69,7 @@
         android:text="@string/label_amount"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="@+id/label_message"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_bic"
         tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
@@ -62,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:height="50dp"
-        android:onClick="generateQrCode"
+        android:onClick="handlerGenerateQrCode"
         android:text="@string/btn_generate_qr"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -81,6 +135,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_generate_qr" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

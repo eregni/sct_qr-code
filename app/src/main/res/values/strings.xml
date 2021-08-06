@@ -3,8 +3,11 @@
     <string name="app_name">SCT QR-code generator</string>
 
     <!-- Main Activity-->
-    <string name="label_amount">"Sum: "</string>
-    <string name="label_message">"Message: "</string>
+    <string name="label_name">Name:</string>
+    <string name="label_iban" translatable="false">Iban:</string>
+    <string name="label_bic" translatable="false">Bic:</string>
+    <string name="label_amount">Sum:</string>
+    <string name="label_message">Message:</string>
     <string name="btn_generate_qr">Generate QR-code</string>
     <string name="btn_settings">Settings</string>
     <string name="qr_code" translatable="false">qr-code</string>
@@ -14,6 +17,8 @@
     <string name="settings_name">First + last name</string>
     <string name="settings_iban" translatable="false">IBAN</string>
     <string name="settings_bic" translatable="false">BIC</string>
+    <string name="dialog_setup_title" translatable="false">Setup</string>
+    <string name="dialog_setup_message">You need to set up:\n- Name\n- Iban\n- Bic</string>
 
     <!-- Menu main -->
     <string name="menu_settings">Settings</string>
