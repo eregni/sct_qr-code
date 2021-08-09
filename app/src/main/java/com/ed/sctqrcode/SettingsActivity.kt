@@ -2,20 +2,20 @@ package com.ed.sctqrcode
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Message
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.isDigitsOnly
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
+import androidx.preference.*
 import java.util.*
 import java.util.stream.IntStream.range
 import kotlin.streams.toList
 
 
-// todo: BUG -> run time exceptio NumberFormatException at java.lang.Long.parseLong
-class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -26,35 +26,26 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
                 .commit()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        prefs.registerOnSharedPreferenceChangeListener(this)
-        if ("" in prefs.all.values) dialogAlertSettings()
-    }
-
-    override fun onPause(){
-        super.onPause()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        prefs.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        prefs.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return (when (item.itemId) {
             android.R.id.home -> {
-                val prefs = PreferenceManager.getDefaultSharedPreferences(this).all
-                if ("" in prefs.values) dialogAlertSettings()
-                else finish()
+                finish()
                 true
             }
             else ->
                 return super.onOptionsItemSelected(item)
         })
+    }
+}
+
+
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener  {
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.root_preferences, rootKey)
+        if ("" in PreferenceManager.getDefaultSharedPreferences(requireContext())) dialogAlertSettings()
     }
 
     override fun onSharedPreferenceChanged(preference: SharedPreferences?, key: String?) {
@@ -64,12 +55,39 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             "settings_bic" -> checkSettingBic()
             else -> {}
         }
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext()).all
+        val pref = findPreference<EditTextPreference>(key!!)
+        var value = preferences[key].toString()
+        if (value.isBlank()) value = getString(R.string.not_set)
+        pref?.setSummaryProvider { value }
+    }
+
+    private fun dialogAlertSettings(){
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog.setTitle(getString(R.string.dialog_setup_title))
+        dialog.setMessage(getString(R.string.dialog_setup_message))
+        dialog.setPositiveButton("Ok", null)
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    private fun dialogIncorrectValue(message: String){
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog.setTitle(getString(R.string.incorrect_value))
+        dialog.setMessage(message)
+        dialog.setPositiveButton("Ok", null)
+        dialog.setCancelable(true)
+        dialog.show()
     }
 
     @SuppressLint("ApplySharedPref")
     private fun checkSettingName() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val value = prefs.getString("settings_name", "")?.trim()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        var value = prefs.getString("settings_name", "")!!.trim()
+        if (value.length > 70) {
+            dialogIncorrectValue(getString(R.string.incorrect_name_value))
+            value = ""
+        }
         val editor = prefs.edit()
         editor.putString("settings_name", value)
         editor?.commit()
@@ -79,7 +97,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     @SuppressLint("ApplySharedPref")
     private fun checkSettingIban() {
         var valid = true
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val iban = prefs.getString("settings_iban", "")!!.replace("\\s".toRegex(), "")
 
         //check length
@@ -107,7 +125,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         }
         else{
             editor.putString("settings_iban", "")
-            // todo show alert dialog
+            dialogIncorrectValue(getString(R.string.invalid_iban_value))
         }
         editor.commit()
     }
@@ -125,11 +143,11 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     @SuppressLint("ApplySharedPref")
     private fun checkSettingBic() {
         var valid = true
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val bic = prefs.getString("settings_bic", "")!!.replace("\\s".toRegex(), "")
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val bic = prefs.getString("settings_bic", "")?.replace("\\s".toRegex(), "")
 
         // check length
-        if (bic.length != 8 && bic.length != 15) valid = false
+        if (bic?.length != 8 && bic?.length != 15) valid = false
         else {
             val countryCode = bic.substring(4, 6)
             val bankCode = bic.substring(0, 4)
@@ -145,25 +163,20 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         if (valid) editor.putString("settings_bic", bic)
         else{
             editor.putString("settings_bic", "")
-            // todo show alert dialog
+            dialogIncorrectValue(getString(R.string.invalid_bic_value))
         }
         editor.commit()
     }
 
-    private fun dialogAlertSettings(){
-        val dialog = AlertDialog.Builder(this)
-        dialog.setTitle(getString(R.string.dialog_setup_title))
-        dialog.setMessage(getString(R.string.dialog_setup_message))
-        dialog.setPositiveButton("Ok", null)
-        dialog.setCancelable(false)
-        dialog.show()
+    override fun onPause(){
+        super.onPause()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        prefs.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        prefs.registerOnSharedPreferenceChangeListener(this)
     }
 }
-
-class SettingsFragment : PreferenceFragmentCompat() {
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.root_preferences, rootKey)
-    }
-}
-
-

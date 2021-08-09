@@ -11,4 +11,9 @@
     <string name="menu_settings">Instellingen</string>
     <string name="menu_about">Over</string>
     <string name="dialog_setup_message">Je moet instellen:\n- Naam\n- Iban\n- Bic</string>
+    <string name="not_set">Niet ingesteld</string>
+    <string name="incorrect_value">Incorrecte invoer!</string>
+    <string name="invalid_iban_value">IBAN nr is ongeldig</string>
+    <string name="invalid_bic_value">BIC is ongeldig</string>
+    <string name="incorrect_name_value">Naam is te lang. (Max 70 karakters)</string>
 </resources>
