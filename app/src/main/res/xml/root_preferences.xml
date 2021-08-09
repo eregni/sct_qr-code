@@ -8,6 +8,7 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="@string/settings_name"
+        app:defaultValue=""
         app:singleLineTitle="true"
         app:useSimpleSummaryProvider="true" />
     <EditTextPreference
@@ -15,12 +16,14 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="@string/settings_iban"
+        app:defaultValue=""
         app:singleLineTitle="true"
         app:useSimpleSummaryProvider="true" />
     <EditTextPreference
         android:key="settings_bic"
         android:selectAllOnFocus="true"
         android:singleLine="true"
+        app:defaultValue=""
         android:title="@string/settings_bic"
         app:singleLineTitle="true"
         app:useSimpleSummaryProvider="true" />

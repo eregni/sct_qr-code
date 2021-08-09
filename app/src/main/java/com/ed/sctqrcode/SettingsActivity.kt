@@ -43,9 +43,11 @@ class SettingsActivity : AppCompatActivity() {
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener  {
 
+    private val _prefs by lazy { PreferenceManager.getDefaultSharedPreferences(requireContext()) }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        if ("" in PreferenceManager.getDefaultSharedPreferences(requireContext())) dialogAlertSettings()
+        if ("" in _prefs) dialogAlertSettings()
     }
 
     override fun onSharedPreferenceChanged(preference: SharedPreferences?, key: String?) {
@@ -55,9 +57,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             "settings_bic" -> checkSettingBic()
             else -> {}
         }
-        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext()).all
         val pref = findPreference<EditTextPreference>(key!!)
-        var value = preferences[key].toString()
+        var value = _prefs.all[key].toString()
         if (value.isBlank()) value = getString(R.string.not_set)
         pref?.setSummaryProvider { value }
     }
@@ -82,23 +83,21 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     @SuppressLint("ApplySharedPref")
     private fun checkSettingName() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        var value = prefs.getString("settings_name", "")!!.trim()
+        var value = _prefs.getString("settings_name", "")!!.trim()
         if (value.length > 70) {
             dialogIncorrectValue(getString(R.string.incorrect_name_value))
             value = ""
         }
-        val editor = prefs.edit()
+        val editor = _prefs.edit()
         editor.putString("settings_name", value)
-        editor?.commit()
+        editor.commit()
     }
 
     // https://en.wikipedia.org/wiki/International_Bank_Account_Number
     @SuppressLint("ApplySharedPref")
     private fun checkSettingIban() {
         var valid = true
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val iban = prefs.getString("settings_iban", "")!!.replace("\\s".toRegex(), "")
+        val iban = _prefs.getString("settings_iban", "")!!.replace("\\s".toRegex(), "")
 
         //check length
         if (iban.length > 34 || iban.length < 5) valid = false
@@ -118,7 +117,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
         }
 
-        val editor = prefs.edit()
+        val editor = _prefs.edit()
         if (valid) {
             val grouped =  iban.chunked(4).joinToString(" ")
             editor.putString("settings_iban", grouped)
@@ -143,8 +142,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     @SuppressLint("ApplySharedPref")
     private fun checkSettingBic() {
         var valid = true
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val bic = prefs.getString("settings_bic", "")?.replace("\\s".toRegex(), "")
+        val bic = _prefs.getString("settings_bic", "")?.replace("\\s".toRegex(), "")
 
         // check length
         if (bic?.length != 8 && bic?.length != 15) valid = false
@@ -159,7 +157,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
         }
 
-        val editor = prefs.edit()
+        val editor = _prefs.edit()
         if (valid) editor.putString("settings_bic", bic)
         else{
             editor.putString("settings_bic", "")
@@ -170,13 +168,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     override fun onPause(){
         super.onPause()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        prefs.unregisterOnSharedPreferenceChangeListener(this)
+        _prefs.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onResume() {
         super.onResume()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        prefs.registerOnSharedPreferenceChangeListener(this)
+        _prefs.registerOnSharedPreferenceChangeListener(this)
     }
 }

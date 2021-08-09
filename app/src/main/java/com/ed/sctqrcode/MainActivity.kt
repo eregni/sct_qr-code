@@ -27,19 +27,29 @@ class MainActivity : AppCompatActivity() {
     // todo: DEBUG: Skipped 33 frames!  The application may be doing too much work on its main thread. ???
     // todo Enable data binding -> https://developer.android.com/codelabs/kotlin-android-training-data-binding-basics#2
     // todo Readme.md
+    private val _prefs by lazy { PreferenceManager.getDefaultSharedPreferences(this) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this).all
         setContentView(R.layout.activity_main)
-        if ("" in prefs.values) menuOpenSettings()
         }
+
+    private fun preferencesMissing(): Boolean {
+        val name: Boolean = _prefs.getString("settings_name", "").isNullOrBlank()
+        val iban: Boolean = _prefs.getString("settings_iban", "").isNullOrBlank()
+        val bic: Boolean = _prefs.getString("settings_bic", "").isNullOrBlank()
+        return name || iban || bic
+    }
 
     override fun onResume() {
         super.onResume()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this).all
-        findViewById<TextView>(R.id.label_name_value).text = "${prefs["settings_name"]}"
-        findViewById<TextView>(R.id.label_iban_value).text = "${prefs["settings_iban"]}"
-        findViewById<TextView>(R.id.label_bic_value).text = "${prefs["settings_bic"]}"
+        findViewById<TextView>(R.id.label_name_value).text =
+            "${_prefs.getString("settings_name", getString(R.string.not_set))}"
+        findViewById<TextView>(R.id.label_iban_value).text =
+            "${_prefs.getString("settings_iban", getString(R.string.not_set))}"
+        findViewById<TextView>(R.id.label_bic_value).text =
+            "${_prefs.getString("settings_bic", getString(R.string.not_set))}"
+        if (preferencesMissing()) menuOpenSettings()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -78,12 +88,11 @@ class MainActivity : AppCompatActivity() {
         val qrView = findViewById<ImageView>(R.id.imageView_qr_code)
         val hints = HashMap<EncodeHintType, ErrorCorrectionLevel>()
         hints[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.M
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val iban = prefs.getString("settings_iban", "")!!.replace("\\s".toRegex(), "")
+        val iban = _prefs.getString("settings_iban", "")!!.replace("\\s".toRegex(), "")
         val qrString =
             "BCD\n002\n1\nSCT\n" +
-            "${prefs.getString("settings_bic", "")}\n" +
-            "${prefs.getString("settings_name", "")}\n" +
+            "${_prefs.getString("settings_bic", "")}\n" +
+            "${_prefs.getString("settings_name", "")}\n" +
             "${iban}\n" +
             "EUR$amount\n\n\n" +
             message
