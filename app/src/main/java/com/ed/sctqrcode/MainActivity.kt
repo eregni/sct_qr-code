@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun generateQrCode(amount: String, message: String): Bitmap{
+	// Todo BUG: the iban nr is not recognized by the belfius app. -> try putting the aplhabetic chars in uppercase
         //Guidelines: https://www.europeanpaymentscouncil.eu/sites/default/files/KB/files/EPC069-12%20v2.1%20Quick%20Response%20Code%20-%20Guidelines%20to%20Enable%20the%20Data%20Capture%20for%20the%20Initiation%20of%20a%20SCT.pdf
         val qrView = findViewById<ImageView>(R.id.imageView_qr_code)
         val hints = HashMap<EncodeHintType, ErrorCorrectionLevel>()
