@@ -7,7 +7,7 @@
     <string name="label_message">"Mededeling: "</string>
     <string name="btn_settings">Instellingen</string>
     <string name="title_activity_settings">Instellingen</string>
-    <string name="settings_name">Voor en achternaam</string>
+    <string name="settings_name">Voor en achternaam *</string>
     <string name="menu_settings">Instellingen</string>
     <string name="menu_about">Over</string>
     <string name="dialog_setup_message">Je moet instellen:\n- Naam\n- Iban\n- Bic</string>
