@@ -2,14 +2,14 @@ package com.ed.sctqrcode
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Message
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.isDigitsOnly
-import androidx.preference.*
+import androidx.preference.EditTextPreference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import java.util.*
 import java.util.stream.IntStream.range
 import kotlin.streams.toList
@@ -63,24 +63,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         pref?.setSummaryProvider { value }
     }
 
-    private fun dialogAlertSettings(){
-        val dialog = AlertDialog.Builder(requireContext())
-        dialog.setTitle(getString(R.string.dialog_setup_title))
-        dialog.setMessage(getString(R.string.dialog_setup_message))
-        dialog.setPositiveButton("Ok", null)
-        dialog.setCancelable(false)
-        dialog.show()
-    }
-
-    private fun dialogIncorrectValue(message: String){
-        val dialog = AlertDialog.Builder(requireContext())
-        dialog.setTitle(getString(R.string.incorrect_value))
-        dialog.setMessage(message)
-        dialog.setPositiveButton("Ok", null)
-        dialog.setCancelable(true)
-        dialog.show()
-    }
-
     @SuppressLint("ApplySharedPref")
     private fun checkSettingName() {
         var value = _prefs.getString("settings_name", "")!!.trim()
@@ -97,8 +79,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     @SuppressLint("ApplySharedPref")
     private fun checkSettingIban() {
         var valid = true
-        val iban = _prefs.getString("settings_iban", "")!!.replace("\\s".toRegex(), "")
-
+        val iban = _prefs.getString("settings_iban", "")!!.replace("\\s".toRegex(), "").uppercase()
         //check length
         if (iban.length > 34 || iban.length < 5) valid = false
         else{
@@ -142,10 +123,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     @SuppressLint("ApplySharedPref")
     private fun checkSettingBic() {
         var valid = true
-        val bic = _prefs.getString("settings_bic", "")?.replace("\\s".toRegex(), "")
-
+        val bic = _prefs.getString("settings_bic", "")!!.replace("\\s".toRegex(), "").uppercase()
+        // return when bic is deleted
+        if (bic.isEmpty()) return
         // check length
-        if (bic?.length != 8 && bic?.length != 15) valid = false
+        if (bic.length != 8 && bic.length != 15) valid = false
         else {
             val countryCode = bic.substring(4, 6)
             val bankCode = bic.substring(0, 4)
@@ -164,6 +146,24 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             dialogIncorrectValue(getString(R.string.invalid_bic_value))
         }
         editor.commit()
+    }
+
+    private fun dialogAlertSettings(){
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog.setTitle(getString(R.string.dialog_setup_title))
+        dialog.setMessage(getString(R.string.dialog_setup_message))
+        dialog.setPositiveButton("Ok", null)
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    private fun dialogIncorrectValue(message: String){
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog.setTitle(getString(R.string.incorrect_value))
+        dialog.setMessage(message)
+        dialog.setPositiveButton("Ok", null)
+        dialog.setCancelable(true)
+        dialog.show()
     }
 
     override fun onPause(){
