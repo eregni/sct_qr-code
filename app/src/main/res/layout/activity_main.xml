@@ -1,141 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout_editor_absoluteY="81dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/label_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_name"
-        app:layout_constraintEnd_toEndOf="@+id/label_message"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteY="81dp">
 
-    <TextView
-        android:id="@+id/label_name_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text=""
-        app:layout_constraintStart_toEndOf="@+id/label_name"
-        app:layout_constraintTop_toTopOf="@+id/label_name" />
+        <TextView
+            android:id="@+id/label_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_name"
+            app:layout_constraintEnd_toEndOf="@+id/label_message"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/label_iban"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_iban"
-        app:layout_constraintEnd_toEndOf="@+id/label_message"
-        app:layout_constraintTop_toBottomOf="@+id/label_name" />
+        <TextView
+            android:id="@+id/label_name_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text=""
+            app:layout_constraintStart_toEndOf="@+id/label_name"
+            app:layout_constraintTop_toTopOf="@+id/label_name" />
 
-    <TextView
-        android:id="@+id/label_iban_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text=""
-        app:layout_constraintStart_toEndOf="@+id/label_iban"
-        app:layout_constraintTop_toTopOf="@+id/label_iban" />
+        <TextView
+            android:id="@+id/label_iban"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_iban"
+            app:layout_constraintEnd_toEndOf="@+id/label_message"
+            app:layout_constraintTop_toBottomOf="@+id/label_name" />
 
-    <TextView
-        android:id="@+id/label_bic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_bic"
-        app:layout_constraintEnd_toStartOf="@+id/input_message"
-        app:layout_constraintTop_toBottomOf="@+id/label_iban" />
+        <TextView
+            android:id="@+id/label_iban_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text=""
+            app:layout_constraintStart_toEndOf="@+id/label_iban"
+            app:layout_constraintTop_toTopOf="@+id/label_iban" />
 
-    <TextView
-        android:id="@+id/label_bic_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text=""
-        app:layout_constraintStart_toEndOf="@+id/label_bic"
-        app:layout_constraintTop_toTopOf="@+id/label_bic" />
+        <TextView
+            android:id="@+id/label_bic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_bic"
+            app:layout_constraintEnd_toStartOf="@+id/input_message"
+            app:layout_constraintTop_toBottomOf="@+id/label_iban" />
 
-    <TextView
-        android:id="@+id/label_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/label_amount"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="@+id/label_message"
-        app:layout_constraintTop_toBottomOf="@+id/label_bic"
-        tools:ignore="TouchTargetSizeCheck" />
+        <TextView
+            android:id="@+id/label_bic_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text=""
+            app:layout_constraintStart_toEndOf="@+id/label_bic"
+            app:layout_constraintTop_toTopOf="@+id/label_bic" />
 
-    <EditText
-        android:id="@+id/input_amount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:importantForAutofill="no"
-        android:inputType="number|numberDecimal"
-        android:maxLines="1"
-        android:minHeight="48dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/label_amount"
-        app:layout_constraintStart_toEndOf="@+id/label_amount"
-        tools:ignore="SpeakableTextPresentCheck" />
+        <TextView
+            android:id="@+id/label_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/label_amount"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="@+id/label_message"
+            app:layout_constraintTop_toBottomOf="@+id/label_bic"
+            tools:ignore="TouchTargetSizeCheck" />
 
-    <TextView
-        android:id="@+id/label_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/label_message"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_amount" />
+        <EditText
+            android:id="@+id/input_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:importantForAutofill="no"
+            android:inputType="number|numberDecimal"
+            android:maxLines="1"
+            android:minHeight="48dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/label_amount"
+            app:layout_constraintStart_toEndOf="@+id/label_amount"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-    <EditText
-        android:id="@+id/input_message"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:importantForAutofill="no"
-        android:inputType="textShortMessage"
-        android:maxLength="34"
-        android:maxLines="1"
-        android:minHeight="48dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/label_message"
-        app:layout_constraintStart_toEndOf="@+id/label_message"
-        tools:ignore="SpeakableTextPresentCheck" />
+        <TextView
+            android:id="@+id/label_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/label_message"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_amount" />
 
-    <Button
-        android:id="@+id/button_generate_qr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:height="50dp"
-        android:onClick="handlerGenerateQrCode"
-        android:text="@string/btn_generate_qr"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_message" />
+        <EditText
+            android:id="@+id/input_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:importantForAutofill="no"
+            android:inputType="textShortMessage"
+            android:maxLength="34"
+            android:maxLines="1"
+            android:minHeight="48dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/label_message"
+            app:layout_constraintStart_toEndOf="@+id/label_message"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-    <ImageView
-        android:id="@+id/imageView_qr_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:contentDescription="@string/qr_code"
-        android:scaleType="fitStart"
-        android:src="?android:attr/listChoiceIndicatorMultiple"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_generate_qr" />
+        <Button
+            android:id="@+id/button_generate_qr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:height="50dp"
+            android:onClick="handlerGenerateQrCode"
+            android:text="@string/btn_generate_qr"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_message" />
+
+        <ImageView
+            android:id="@+id/imageView_qr_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/qr_code"
+            android:scaleType="fitStart"
+            android:src="?android:attr/listChoiceIndicatorMultiple"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_generate_qr" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
