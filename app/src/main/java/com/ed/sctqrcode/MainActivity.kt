@@ -14,11 +14,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.preference.PreferenceManager
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
-import com.google.zxing.common.BitMatrix
-import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import java.util.*
@@ -74,19 +73,24 @@ class MainActivity : AppCompatActivity() {
 
     fun handlerGenerateQrCode(view: View){
         val inputAmount = findViewById<EditText>(R.id.input_amount).text
-        if (inputAmount.isEmpty()) return
-        val inputMessage = findViewById<EditText>(R.id.input_message).text
         val qrView = findViewById<ImageView>(R.id.imageView_qr_code)
+        if (inputAmount.isEmpty())  {
+            qrView.visibility = View.INVISIBLE
+            return
+        }
+        val inputMessage = findViewById<EditText>(R.id.input_message).text
         val qrCode = generateQrCode(inputAmount.toString(), inputMessage.toString())
         qrView.setImageBitmap(qrCode)
+        qrView.visibility = View.VISIBLE
         closeKeyBoard()
     }
 
     private fun generateQrCode(amount: String, message: String): Bitmap{
         //Guidelines: https://www.europeanpaymentscouncil.eu/sites/default/files/KB/files/EPC069-12%20v2.1%20Quick%20Response%20Code%20-%20Guidelines%20to%20Enable%20the%20Data%20Capture%20for%20the%20Initiation%20of%20a%20SCT.pdf
-        val qrView = findViewById<ImageView>(R.id.imageView_qr_code)
-        val hints = HashMap<EncodeHintType, ErrorCorrectionLevel>()
-        hints[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.M
+        val mainLayoutHeight = findViewById<ConstraintLayout>(R.id.main_layout).measuredHeight
+        val size = mainLayoutHeight / 2
+        val options = HashMap<EncodeHintType, ErrorCorrectionLevel>()
+        options[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.M
         val iban = _prefs.getString("settings_iban", "")!!.replace("\\s".toRegex(), "")
         val qrString =
             "BCD\n002\n1\nSCT\n" +
@@ -95,9 +99,8 @@ class MainActivity : AppCompatActivity() {
             "${iban}\n" +
             "EUR$amount\n\n\n" +
             message
-        val bitMatrix: BitMatrix = QRCodeWriter().encode(qrString, BarcodeFormat.QR_CODE,
-            qrView.width, qrView.height, hints)
-        return BarcodeEncoder().createBitmap(bitMatrix)
+        val encoder = BarcodeEncoder()
+        return encoder.encodeBitmap(qrString, BarcodeFormat.QR_CODE, size, size, options)
     }
 
     private fun dialogMenuAbout(){
